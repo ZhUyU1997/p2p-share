@@ -1,27 +1,27 @@
-import React from "react";
+import React from 'react'
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
-  children?: React.ReactNode;
-  style?: React.CSSProperties;
+    children?: React.ReactNode
+    style?: React.CSSProperties
 }
 const HLayout = React.forwardRef<HTMLDivElement, Props>(
-  ({ style, children, ...props }, ref) => {
-    return (
-      <div
-        ref={ref}
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          ...style,
-        }}
-        {...props}
-      >
-        {children}
-      </div>
-    );
-  }
-);
+    ({ style, children, ...props }, ref) => {
+        return (
+            <div
+                ref={ref}
+                style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    ...style,
+                }}
+                {...props}
+            >
+                {children}
+            </div>
+        )
+    }
+)
 
-export default HLayout;
+export default HLayout
