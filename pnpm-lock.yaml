@@ -1,6 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@ant-design/icons': ^5.1.2
   '@types/react': ^18.0.28
   '@types/react-dom': ^18.0.11
   '@types/shortid': ^0.0.29
@@ -24,6 +25,7 @@ specifiers:
   vite: ^4.3.2
 
 dependencies:
+  '@ant-design/icons': 5.1.2_biqbaboplfbrettd7655fr4n2y
   antd: 5.5.1_biqbaboplfbrettd7655fr4n2y
   axios: 1.4.0
   file-type: 18.4.0
@@ -85,8 +87,8 @@ packages:
     resolution: {integrity: sha512-EB0iwlKDGpG93hW8f85CTJTs4SvMX7tt5ceupvhALp1IF44SeUFOMhKUOYqpsoYWQKAOuTRDMqn75rEaKDp0Xw==}
     dev: false
 
-  /@ant-design/icons/5.1.0_biqbaboplfbrettd7655fr4n2y:
-    resolution: {integrity: sha512-s7NJeBY2NS44+sAhpgaxtgvBda81vpVxLPXXdCWNXwIVR8T7DdhDsSZqqVMPlZwCKwRo89ksWhFifZo0Ulgxdw==}
+  /@ant-design/icons/5.1.2_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-sSorFv+4e5nkSq9vD7UHG2IQYUmR8jCO49+z4vn3MUeiM1G1qxCqh7JiR5pexVY0hZywHes/uxiNflAQZCWZ8Q==}
     engines: {node: '>=8'}
     peerDependencies:
       react: '>=16.0.0'
@@ -998,7 +1000,7 @@ packages:
     dependencies:
       '@ant-design/colors': 7.0.0
       '@ant-design/cssinjs': 1.9.1_biqbaboplfbrettd7655fr4n2y
-      '@ant-design/icons': 5.1.0_biqbaboplfbrettd7655fr4n2y
+      '@ant-design/icons': 5.1.2_biqbaboplfbrettd7655fr4n2y
       '@ant-design/react-slick': 1.0.1_react@18.2.0
       '@babel/runtime': 7.21.5
       '@ctrl/tinycolor': 3.6.0

@@ -11,6 +11,7 @@
         "format": "prettier --write src package.json"
     },
     "dependencies": {
+        "@ant-design/icons": "^5.1.2",
         "antd": "^5.5.1",
         "axios": "^1.4.0",
         "file-type": "^18.4.0",
