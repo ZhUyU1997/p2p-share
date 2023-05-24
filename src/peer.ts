@@ -61,6 +61,7 @@ export const PeerConnection = {
                         resolve()
                     }).on('error', function (err) {
                         console.log(err)
+                        message.error('error')
                         reject(err)
                     })
                 }

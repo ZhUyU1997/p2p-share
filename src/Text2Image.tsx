@@ -11,6 +11,7 @@ import { Typography } from 'antd'
 import { Col, InputNumber, Row, Slider } from 'antd'
 import { PeerConnection } from './peer'
 import { GetServerID } from './util'
+import { message } from 'antd'
 
 const { Title } = Typography
 
@@ -144,15 +145,21 @@ export const Text2Image: React.FC<{
                         loading={status == 'wait'}
                         onClick={async () => {
                             setStatus('wait')
-                            const url = await onRequest({
-                                prompt,
-                                negative_prompt: negativePrompt,
-                                steps,
-                                width,
-                                height,
-                            })
-                            setStatus('ready')
-                            setImageUrl(url)
+                            try {
+                                const url = await onRequest({
+                                    prompt,
+                                    negative_prompt: negativePrompt,
+                                    steps,
+                                    width,
+                                    height,
+                                })
+                                setStatus('ready')
+                                setImageUrl(url)
+                            } catch (error) {
+                                console.log(error)
+                                message.error('timeout')
+                                setStatus('wait')
+                            }
                         }}
                     >
                         生成

@@ -39,7 +39,8 @@ const text2image = async (payload: any) => {
     return res.data
 }
 
-const ID = shortid.generate()
+// const ID = shortid.generate()
+const ID = 'tMuplHkCS'
 const peer = new Peer(ID)
 
 function App() {
@@ -51,9 +52,9 @@ function App() {
             console.log('connected', conn.peer)
             conn.on('data', async (data: any) => {
                 // Will print 'hi!'
-                console.log(data)
+                console.log(conn.peer, data)
                 const res = await text2image(data)
-                console.log('text2image', res)
+                console.log(conn.peer, 'text2image', res)
 
                 if ('images' in res) conn.send({ images: res.images })
                 else conn.send(res)
@@ -65,6 +66,7 @@ function App() {
         const onError = (e: Error) => {
             setStatus('error')
             console.log(e)
+            location.reload()
         }
         peer.on('connection', onConnect)
         peer.on('error', onError)
