@@ -87,7 +87,7 @@ export const Text2Image: React.FC<{
         return new Promise<string>((resolve, reject) => {
             const id = setTimeout(() => {
                 reject('timeout')
-            }, 10 * 1000)
+            }, 30 * 1000)
             console.log('send', payload)
             PeerConnection.sendConnection(GetServerID(), payload)
             PeerConnection.onConnectionOnceReceiveData<Text2ImageResponse>(
@@ -158,7 +158,7 @@ export const Text2Image: React.FC<{
                             } catch (error) {
                                 console.log(error)
                                 message.error('timeout')
-                                setStatus('wait')
+                                setStatus('ready')
                             }
                         }}
                     >
