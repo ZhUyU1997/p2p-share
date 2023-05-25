@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom/client'
-
 import { DataConnection, Peer } from 'peerjs'
 import shortid from 'shortid'
 import axios from 'axios'
+import { Base64ToBlob, BlobToBase64, CompressImage } from './util'
 
 // peer.on("connection", (conn) => {
 //   console.log("");
@@ -17,7 +17,7 @@ import axios from 'axios'
 // });
 
 interface Text2ImageResponse {
-    images: string
+    images: string[]
     parameters: Record<string, any>
     info: string
 }
@@ -56,8 +56,18 @@ function App() {
                 const res = await text2image(data)
                 console.log(conn.peer, 'text2image', res)
 
-                if ('images' in res) conn.send({ images: res.images })
-                else conn.send(res)
+                if ('images' in res) {
+                    const images = await Promise.all(
+                        res.images.map(async (i) => {
+                            const blob = await Base64ToBlob(i)
+                            const image = await CompressImage(blob)
+                            console.log(blob.size, image.size)
+                            return await BlobToBase64(image)
+                        })
+                    )
+                    console.log(res.images[0].length, 'TO', images[0].length)
+                    conn.send({ images })
+                } else conn.send(res)
             })
             conn.on('open', () => {
                 conn.send('open!')
@@ -70,6 +80,8 @@ function App() {
         }
         peer.on('connection', onConnect)
         peer.on('error', onError)
+        console.log('on')
+
         return () => {
             console.log('off')
             peer.off('connection', onConnect)

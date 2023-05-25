@@ -14,6 +14,7 @@
         "@ant-design/icons": "^5.1.2",
         "antd": "^5.5.1",
         "axios": "^1.4.0",
+        "compressorjs": "^1.2.1",
         "file-type": "^18.4.0",
         "jotai": "^2.1.0",
         "magic-bytes.js": "^1.0.14",

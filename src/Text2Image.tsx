@@ -94,13 +94,7 @@ export const Text2Image: React.FC<{
                 GetServerID(),
                 (res) => {
                     console.log('response', res)
-
-                    const u = Uint8Array.from(atob(res.images), (c) =>
-                        c.charCodeAt(0)
-                    )
-                    const blob = new Blob([u], { type: filetype(u)[0].mime })
-                    clearTimeout(id)
-                    resolve(URL.createObjectURL(blob))
+                    resolve(res.images[0])
                 }
             )
         })
