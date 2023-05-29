@@ -4,6 +4,11 @@ import { DataConnection, Peer } from 'peerjs'
 import shortid from 'shortid'
 import axios from 'axios'
 import { Base64ToBlob, BlobToBase64, CompressImage } from './util'
+import {
+    ResponseToWebRTCRequestMessage,
+    WebRTCRequestMessage,
+    WebRTCRequestMessageToFetchRequest,
+} from './message'
 
 // peer.on("connection", (conn) => {
 //   console.log("");
@@ -51,23 +56,87 @@ function App() {
             setStatus('connected')
             console.log('connected', conn.peer)
             conn.on('data', async (data: any) => {
+                const message = data as WebRTCRequestMessage
                 // Will print 'hi!'
-                console.log(conn.peer, data)
-                const res = await text2image(data)
-                console.log(conn.peer, 'text2image', res)
+                console.log(conn.peer, message.order, data)
+                const u = new URL(message.request.url)
 
-                if ('images' in res) {
-                    const images = await Promise.all(
-                        res.images.map(async (i) => {
-                            const blob = await Base64ToBlob(i)
-                            const image = await CompressImage(blob)
-                            console.log(blob.size, image.size)
-                            return await BlobToBase64(image)
-                        })
+                // if(u.pathname == "/test.html")
+                // {
+                //     const response = new Response("hello", {
+                //         headers: {
+                //             "Content-Type" : "text/html"
+                //         }
+                //     })
+                //     console.log(response)
+
+                //     // const res = await response.text()
+                //     // console.log(response, res)
+                //     const webRTCResponse = await ResponseToWebRTCRequestMessage(
+                //         message.order,
+                //         response
+                //     )
+                //     console.log("webRTCResponse", webRTCResponse)
+                //     conn.send(webRTCResponse)
+                //     return
+                // }
+
+                if (!u.pathname.startsWith('/sdapi')) {
+                    const request = WebRTCRequestMessageToFetchRequest(
+                        message,
+                        (url) => {
+                            const u = new URL(url)
+                            u.protocol = location.protocol
+                            u.host = location.host
+                            return u.href
+                        }
                     )
-                    console.log(res.images[0].length, 'TO', images[0].length)
-                    conn.send({ images })
-                } else conn.send(res)
+                    const response = await fetch(request)
+                    console.log(response)
+
+                    // const res = await response.text()
+                    // console.log(response, res)
+                    const webRTCResponse = await ResponseToWebRTCRequestMessage(
+                        message.order,
+                        response
+                    )
+                    conn.send(webRTCResponse)
+                    return
+                }
+                const request = WebRTCRequestMessageToFetchRequest(
+                    message,
+                    (url) => {
+                        const u = new URL(url)
+                        //http://127.0.0.1:7860/sdapi/v1/txt2img
+                        u.protocol = 'http'
+                        u.host = '127.0.0.1:7860'
+                        return u.href
+                    }
+                )
+                const response = await fetch(request)
+                console.log(response)
+
+                // const res = await response.text()
+                // console.log(response, res)
+                const webRTCResponse = await ResponseToWebRTCRequestMessage(
+                    message.order,
+                    response
+                )
+                conn.send(webRTCResponse)
+
+                // const res = await text2image({})
+                // console.log(conn.peer, 'text2image', res)
+
+                // if ('images' in res) {
+                //     const images = await Promise.all(
+                //         res.images.map(async (i) => {
+                //             const blob = await Base64ToBlob(i)
+                //             const image = await CompressImage(blob)
+                //             return await BlobToBase64(image)
+                //         })
+                //     )
+                //     conn.send({ images })
+                // } else conn.send(res)
             })
             conn.on('open', () => {
                 conn.send('open!')
